@@ -67,7 +67,7 @@ class UsageStats {
 
     return UsageStats(
       packageName: json['package_name'] ?? '',
-      appName: json['appName'] ?? '',
+      appName: json['app_name'] ?? '',
       usageTime: json['total_time_in_foreground'] ?? '',
       lastTimeUsed: json['lastTimeUsed'] ?? 0,
     );

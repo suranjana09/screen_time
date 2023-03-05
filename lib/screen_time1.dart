@@ -78,7 +78,7 @@ class _UsageStatsPageState extends State<UsageStatsPage> {
           // if (stats.packageName.contains('home')) {
           return ListTile(
             title: Text('12345'),
-            subtitle: Text(stats.packageName),
+            subtitle: Text(stats.appName),
             trailing: Text(
                 '${int.parse((stats.usageTime) as String) ~/ (1000 * 60)} minutes'),
           );

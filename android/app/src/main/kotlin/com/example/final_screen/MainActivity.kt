@@ -14,6 +14,8 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import android.content.Intent
 import android.app.usage.UsageEvents
+import android.content.pm.PackageManager
+
 
 
 
@@ -53,10 +55,24 @@ class MainActivity: FlutterActivity() {
         startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 }
+
+
+
 }
 
 class UsageStatsHelper {
     companion object {
+         private fun getAppNameFromPackageName(context: Context, packageName: String): String {
+            val packageManager = context.packageManager
+            try {
+                val appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+                val appName = packageManager.getApplicationLabel(appInfo)
+                return appName.toString()
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+            }
+            return ""
+        }
         fun getUsageStats(context: Context, start: Long, end: Long): List<Map<String, String>> {
 
             val calendar = Calendar.getInstance()
@@ -73,9 +89,7 @@ class UsageStatsHelper {
                     UsageStatsManager.INTERVAL_DAILY, start_of_day, end_time
             )
             
-            // val queryUsageStats = usageStatsManager.queryUsageStats(
-            //     UsageStatsManager.INTERVAL_BEST, start, end
-            // )
+           
 
             
             val stats: MutableList<Map<String, String>> = ArrayList()
@@ -90,6 +104,7 @@ class UsageStatsHelper {
         }
                 val map: MutableMap<String, String> = HashMap()
                 map["package_name"] = usageStats.packageName
+                map["app_name"] = getAppNameFromPackageName(context, usageStats.packageName)
                 map["last_time_used"] = usageStats.lastTimeUsed.toString()
 
 
